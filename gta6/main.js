@@ -1,14 +1,17 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const sections = document.querySelectorAll('.section');
+const sections = document.querySelectorAll('.section');
 
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1 });
+function checkPosition() {
+    sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        // Verifica se a seção está visível no viewport
+        if (rect.top < window.innerHeight && rect.bottom >= 0) {
+            section.classList.add('visible');
+        }
+    });
+}
 
-    sections.forEach(section => observer.observe(section));
-});
+// Verifica as posições ao carregar a página
+checkPosition();
+
+// Adiciona o evento de scroll para monitorar a posição
+window.addEventListener('scroll', checkPosition);
